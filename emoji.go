@@ -1,6 +1,7 @@
 package ordering
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -18,6 +19,15 @@ func IsEmoji(e string) bool {
 }
 
 type EmojiSlice []string
+
+func NewEmojiSlice(emojis []string) (EmojiSlice, error) {
+	for _, str := range emojis {
+		if !IsEmoji(str) {
+			return nil, fmt.Errorf("'%s' is not an emoji", str)
+		}
+	}
+	return EmojiSlice(emojis), nil
+}
 
 func (e EmojiSlice) Less(a, b int) bool {
 	aVal := math.MaxInt32

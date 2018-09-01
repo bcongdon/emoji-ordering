@@ -1,6 +1,7 @@
 package ordering
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -38,6 +39,19 @@ func TestLess(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		assert.Equal(t, Less(test.a, test.b), test.expected)
+		slice := EmojiSlice([]string{test.a, test.b})
+		assert.Equal(t, slice.Less(0, 1), test.expected)
 	}
+}
+
+func TestNewEmojiSlice(t *testing.T) {
+	valid := []string{"😀", "😃", "😄"}
+	emojiSlice, err := NewEmojiSlice(valid)
+	assert.Equal(t, EmojiSlice(valid), emojiSlice)
+	assert.Nil(t, err)
+
+	invalid := []string{"foo", "😃", "😄"}
+	emojiSlice, err = NewEmojiSlice(invalid)
+	assert.Nil(t, emojiSlice)
+	assert.Equal(t, err, fmt.Errorf("'foo' is not an emoji"))
 }

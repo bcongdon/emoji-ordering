@@ -1,5 +1,9 @@
 package ordering
 
+import (
+	"math"
+)
+
 var emojiIndices = make(map[string]int)
 
 func init() {
@@ -13,16 +17,26 @@ func IsEmoji(e string) bool {
 	return ok
 }
 
-func Less(a, b string) bool {
-	var aIdx int
-	var bIdx int
+type EmojiSlice []string
 
-	if IsEmoji(a) {
-		aIdx = emojiIndices[a]
+func (e EmojiSlice) Less(a, b int) bool {
+	aVal := math.MaxInt32
+	bVal := math.MaxInt32
+
+	if IsEmoji(e[a]) {
+		aVal = emojiIndices[e[a]]
 	}
-	if IsEmoji(b) {
-		bIdx = emojiIndices[b]
+	if IsEmoji(e[b]) {
+		bVal = emojiIndices[e[b]]
 	}
 
-	return aIdx < bIdx
+	return aVal < bVal
+}
+
+func (e EmojiSlice) Swap(i, j int) {
+	e[i], e[j] = e[j], e[i]
+}
+
+func (e EmojiSlice) Len() int {
+	return len(e)
 }

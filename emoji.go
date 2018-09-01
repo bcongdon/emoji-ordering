@@ -1,4 +1,8 @@
+// Package ordering provides utilities for ordering emojis according to the
+// official Unicode emoji sort order
 package ordering
+
+//go:generate go run gen.go
 
 import (
 	"fmt"
@@ -8,7 +12,7 @@ import (
 var emojiIndices = make(map[string]int)
 
 func init() {
-	for idx, emoji := range Emojis {
+	for idx, emoji := range allEmojis {
 		emojiIndices[emoji] = idx
 	}
 }
